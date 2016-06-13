@@ -1,18 +1,31 @@
 package com.buaa.news.newsproject;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import com.buaa.news.newsproject.R;
+
+import com.buaa.news.newsproject.imp.ContentFragment;
+import com.buaa.news.newsproject.imp.MenuLeftFragment;
 import com.nineoldandroids.view.ViewHelper;
+
+import org.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends FragmentActivity {
 
+    private static final String TAG_CONTENT = "TAG_CONTENT";
+    private static final String TAG_LEFT = "TAG_LEFT";
+    @ViewInject(R.id.vp_content)
     private DrawerLayout mDrawerLayout ;
+    private ArrayList<BasePager> mPagers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,15 +34,15 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerlayout);
+
+        initFragment();
         iniEvents();
-
-
     }
 
-    //获取Button的点击事件
-    public void OpenLeftMenu(View view){
-        mDrawerLayout.openDrawer(Gravity.LEFT);
-    }
+//    //获取Button的点击事件
+//    public void OpenLeftMenu(View view){
+//        mDrawerLayout.openDrawer(Gravity.LEFT);
+//    }
 
     //给侧边栏设置监听事件，当点击按钮时调用
     private void iniEvents(){
@@ -81,7 +94,14 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
+    }
 
+    public void initFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.id_left_menu,new MenuLeftFragment(),"TAG_LEFT");
+        transaction.replace(R.id.id_content,new ContentFragment(),"TAG_CONTENT");
+        transaction.commit();
     }
 
 }
