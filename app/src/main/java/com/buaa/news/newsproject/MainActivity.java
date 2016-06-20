@@ -22,9 +22,7 @@ public class MainActivity extends FragmentActivity {
 
     private static final String TAG_CONTENT = "TAG_CONTENT";
     private static final String TAG_LEFT = "TAG_LEFT";
-    @ViewInject(R.id.vp_content)
-    private DrawerLayout mDrawerLayout ;
-    private ArrayList<BasePager> mPagers;
+    public DrawerLayout mDrawerLayout ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,7 @@ public class MainActivity extends FragmentActivity {
         iniEvents();
     }
 
-//    //获取Button的点击事件
+    //获取Button的点击事件
 //    public void OpenLeftMenu(View view){
 //        mDrawerLayout.openDrawer(Gravity.LEFT);
 //    }
@@ -82,6 +80,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
 
+
             }
 
             @Override
@@ -96,12 +95,31 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
+    /**
+     * 初始化Fragment
+     */
     public void initFragment(){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.id_left_menu,new MenuLeftFragment(),"TAG_LEFT");
-        transaction.replace(R.id.id_content,new ContentFragment(),"TAG_CONTENT");
+        transaction.replace(R.id.id_left_menu,new MenuLeftFragment(),TAG_LEFT);
+        transaction.replace(R.id.id_content,new ContentFragment(),TAG_CONTENT);
         transaction.commit();
+    }
+
+    /**
+     * 获取侧边栏对象，就是利用Fragment设置的标签获取
+     */
+    public MenuLeftFragment getMenuLeftFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        MenuLeftFragment fragment = (MenuLeftFragment) fm.findFragmentByTag(TAG_LEFT);
+        return fragment;
+    }
+
+    //获取主页面对象
+    public ContentFragment getContentFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        ContentFragment fragment = (ContentFragment) fm.findFragmentByTag(TAG_CONTENT);
+        return fragment;
     }
 
 }
